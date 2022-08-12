@@ -14,12 +14,18 @@ def get_logger(module_name: str, fname: str = './logs.txt') -> logging.Logger:
   return logging.getLogger(module_name)
 
 def ignore_imported_loggers():
-  with open('./requirements.txt') as imported_modules:
-    modules = imported_modules.readlines()
-
-    for module in modules:
-      module = str(module).split("==")[0]
-      logging.getLogger(module).setLevel(logging.WARNING)
-
-  """ for some reason we need to do this too """
-  logging.getLogger("PIL.TiffImagePlugin").setLevel(logging.WARNING)
+  modules = [
+    "matplotlib",
+    "numpy",
+    "opencv-python",
+    "pandas",
+    "scikit-image",
+    "google-api-core",
+    "google-cloud-vision",
+    "PIL.TiffImagePlugin",
+    "matplotlib.font_manager"
+  ]
+  
+  for module in modules:
+    module = str(module).split("==")[0]
+    logging.getLogger(module).setLevel(logging.WARNING)
