@@ -4,7 +4,7 @@ import os
 from . import args
 from . import logging as logs
 from . import cli as cli
-from prmorph_package.functions import main as funcm
+from .functions import main as funcm
 
 logger = logs.get_logger(__name__)
 
