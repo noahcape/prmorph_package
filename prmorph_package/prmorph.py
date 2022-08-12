@@ -6,14 +6,13 @@ from . import logging as logs
 from . import cli as cli
 from .functions import main as funcm
 
-logger = logs.get_logger(__name__)
-
 """ This is the main entry point from cli to functions """
 def main(in_dir: str, out_dir: str):
     try:
         # setup everything
         cli.main()
 
+        logger = logs.get_logger(__name__)
         # check arguments
         args.arg_checker(in_dir, out_dir)
 
