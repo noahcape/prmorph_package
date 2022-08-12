@@ -4,7 +4,7 @@ import os
 from . import args
 from . import logging as logs
 from . import cli as cli
-from functions import main as functions
+from .functions import main as funcm
 
 logger = logs.get_logger(__name__)
 
@@ -34,10 +34,10 @@ def main(in_dir: str, out_dir: str):
 
                 """ ensure that is is a valid image file to read """
                 if img.lower().endswith(('.png', '.jpg', '.jpeg')):
-                    functions.detect_fish_id(f"{in_dir}/{img}", out_dir)
+                    funcm.detect_fish_id(f"{in_dir}/{img}", out_dir)
 
                     """ compute the length """
-                    functions.regular_length(f"{in_dir}/{img}", writer)
+                    funcm.regular_length(f"{in_dir}/{img}", writer)
 
         logger.info(f"prmorph finished computing regular length, find csv file at {file_name}")
     
