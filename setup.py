@@ -40,7 +40,7 @@ setup(
     include_package_data=True,
     keywords='prmorph_package',
     name='prmorph_package',
-    packages=find_packages(include=['prmorph_package', 'prmorph.*', 'prmorph_package/*']),
+    packages=find_packages(include=['prmorph_package', 'prmorph.*']),
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/noahcape/prmorph_package',
