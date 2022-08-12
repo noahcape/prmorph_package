@@ -1,9 +1,9 @@
 """Main module."""
 import datetime as dt
 import os
-from .config import args
-from .config import logging as logs
-from .cli import main as setup
+from . import args
+from . import logging as logs
+from . import cli as cli
 from .functions import main as functions
 
 logger = logs.get_logger(__name__)
@@ -12,7 +12,7 @@ logger = logs.get_logger(__name__)
 def main(in_dir: str, out_dir: str):
     try:
         # setup everything
-        setup()
+        cli.main()
 
         # check arguments
         args.arg_checker(in_dir, out_dir)

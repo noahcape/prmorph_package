@@ -9,7 +9,7 @@ from .src import crop_image as crop
 from .src import scale
 from .src import threshold as thresh
 from .src import measure
-from ..config import logging as logs
+from .. import logging as logs
 
 logger = logs.get_logger(__name__)
 
