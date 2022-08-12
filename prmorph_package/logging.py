@@ -1,19 +1,6 @@
 import logging
 
-def get_logger(module_name: str, fname: str = './logs.txt') -> logging.Logger:
-  logging.basicConfig(
-    format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
-    datefmt='%H:%M:%S',
-    level=logging.DEBUG,
-    handlers=[
-      logging.FileHandler(fname),
-      logging.StreamHandler()
-    ]
-  )
-
-  return logging.getLogger(module_name)
-
-def ignore_imported_loggers():
+def _ignore_imported_loggers():
   modules = [
     "matplotlib",
     "numpy",
@@ -29,3 +16,18 @@ def ignore_imported_loggers():
   for module in modules:
     module = str(module).split("==")[0]
     logging.getLogger(module).setLevel(logging.WARNING)
+
+def get_logger(module_name: str, fname: str = './logs.txt') -> logging.Logger:
+  _ignore_imported_loggers()
+
+  logging.basicConfig(
+    format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+    datefmt='%H:%M:%S',
+    level=logging.DEBUG,
+    handlers=[
+      logging.FileHandler(fname),
+      logging.StreamHandler()
+    ]
+  )
+
+  return logging.getLogger(module_name)
