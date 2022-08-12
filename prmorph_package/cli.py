@@ -7,24 +7,23 @@ import prmorph_package as prmorph
 """ set up logging """
 logger = logs.get_logger(__name__)
 
-def main():
+def main(from_cli: bool = False):
     logs.ignore_imported_loggers()
 
     """ get args """
-    args = a.main()
+    if from_cli:
+        args = a.main()
 
-    logger.info("prmorph running")
-    logger.info(f"reading from {args.in_dir}, writing to {args.out_dir}")
-
-    """ run main method """
-    prmorph.main(args.in_dir, args.out_dir)
+        """ run main method """
+        prmorph.main(args.in_dir, args.out_dir)
+        
     return 0
 
 
 if __name__ == "__main__":
     """ wrap everything all raised exceptions get caught """
     try:
-        sys.exit(main())  # pragma: no cover
+        sys.exit(main(True))  # pragma: no cover
     except Exception as e:
         logger.error(str(e))
         raise

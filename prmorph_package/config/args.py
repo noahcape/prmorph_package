@@ -1,10 +1,7 @@
 import argparse
 import os
 
-def _arg_checker(args: argparse.Namespace) -> None:
-    in_dir: str = args.in_dir
-    out_dir: str = args.out_dir
-
+def arg_checker(in_dir: str, out_dir: str) -> None:
     """ check that the in_dir exists """
     if not os.path.exists(in_dir):
         raise Exception(f"{in_dir} does not exists to read from")
@@ -25,8 +22,5 @@ def main():
     parser.add_argument("-o", "--out-dir", help="directory to save output to", required=True)
     """Add argument for parser"""
     args = parser.parse_args()
-
-    """ check args and throw error if needd """
-    _arg_checker(args)
 
     return args

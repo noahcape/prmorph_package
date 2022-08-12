@@ -4,4 +4,4 @@ __author__ = """Noah Cape"""
 __email__ = 'noahcape@gmail.com'
 __version__ = '0.0.1'
 
-from . import functions as main
+from . import prmorph as main
