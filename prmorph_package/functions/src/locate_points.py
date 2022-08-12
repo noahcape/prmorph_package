@@ -1,5 +1,5 @@
-import prmorph_package.utils as utils
 from typing import List, Tuple
+from ... import utils
 
 Pixel_List = Tuple[List[int], List[int]]
 Averaged_Point = Tuple[float, float]

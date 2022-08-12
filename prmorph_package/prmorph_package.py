@@ -1,8 +1,8 @@
 """Main module."""
 import datetime as dt
 import os
-import prmorph_package.config.logging as logs
-import prmorph_package.functions.main as functions
+from .config import logging as logs
+from .functions import main as functions
 
 logger = logs.get_logger(__name__)
 

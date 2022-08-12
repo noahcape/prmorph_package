@@ -3,13 +3,13 @@ import numpy as np
 import cv2 as cv
 import io
 import matplotlib.pyplot as plt
-import prmorph_package.functions.src.vision as vision
-import prmorph_package.functions.src.locate_points as locate
-import prmorph_package.functions.src.crop_image as crop
-import prmorph_package.functions.src.scale as scale
-import prmorph_package.functions.src.threshold as thresh
-import prmorph_package.functions.src.measure as measure
-import prmorph_package.config.logging as logs
+from .src import vision
+from .src import locate_points as locate
+from .src import crop_image as crop
+from .src import scale
+from .src import threshold as thresh
+from .src import measure
+from ..config import logging as logs
 
 logger = logs.get_logger(__name__)
 
