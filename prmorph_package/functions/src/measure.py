@@ -3,7 +3,7 @@ This file will take nose and caudal point along
 with the pixel:mm ratio and get the guppy length
 '''
 from typing import Tuple
-import prmorph_package.utils as utils
+from ... import utils
 
 
 def regular_length(

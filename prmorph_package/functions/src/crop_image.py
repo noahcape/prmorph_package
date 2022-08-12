@@ -1,7 +1,7 @@
 from typing import List, Tuple, Callable
 import numpy as np
 import skimage
-import prmorph_package.utils as utils
+from ... import utils
 
 
 Point = Tuple[int, int]
