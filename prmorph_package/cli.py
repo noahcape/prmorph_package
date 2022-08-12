@@ -1,8 +1,8 @@
 """Console script for prmorph_package."""
 import sys
-from .config import args as a
-from .config import logging as logs
-import prmorph_package as prmorph
+from . import args as a
+from . import logging as logs
+from . import prmorph
 
 """ set up logging """
 logger = logs.get_logger(__name__)
