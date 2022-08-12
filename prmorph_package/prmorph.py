@@ -4,7 +4,7 @@ import os
 from . import args
 from . import logging as logs
 from . import cli as cli
-from .functions import main as functions
+from functions import main as functions
 
 logger = logs.get_logger(__name__)
 
