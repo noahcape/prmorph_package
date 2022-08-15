@@ -1,3 +1,4 @@
+import math
 from typing import List, Tuple
 from ... import utils
 
@@ -39,9 +40,10 @@ def main(
     if get_top:
         top = utils.find_point(t_b_top_pixels, (0, 40), 1, lambda x, y: x < y)
 
+# , lambda x, y: x > y
     if get_bottom:
         bottom = utils.find_point(
-            t_b_bottom_pixels, (-50, -1), 1, lambda x, y: x > y)
+            t_b_bottom_pixels, (-50, -1), 1)
 
     if get_nose:
         nose = utils.find_point(n_t_pixels, (0, 5), 0)
@@ -50,3 +52,26 @@ def main(
         tail = utils.find_point(n_t_pixels, (-40, -1), 0)
 
     return (top, bottom, nose, tail)
+
+
+def approximate_caudal(pnt_1: utils.Point, pnt_2: utils.Point) -> utils.Point:
+    (x1, y1) = pnt_1
+    (x2, y2) = pnt_2
+
+    # get the quadratic coeeficients
+    a = -1/100
+    b = ((-1 * y1) - y2) * a
+    c = (y1 * y2 * a) - ((-1 * x1) - x2)
+    
+    # calculate the descriminant
+    d = b ** 2 - 4 * a * c
+
+    # get first and second y intecepts
+    f = (-b + math.sqrt(d)) / (2 * a)
+    s = (-b - math.sqrt(d)) / (2 * a)
+
+    # now calculate the min point
+    y = ((f + s) / 2)
+    x = (a * (y - y1)*(y - y2) + x1 + x2) / 2
+
+    return (x,y)

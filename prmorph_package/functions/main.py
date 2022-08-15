@@ -9,6 +9,8 @@ from .src import crop_image as crop
 from .src import scale
 from .src import threshold as thresh
 from .src import measure
+from .src import landmark
+from .src import trace
 from .. import logging as logs
 
 logger = logs.get_logger(__name__)
@@ -27,23 +29,48 @@ def regular_length(guppy_path: str, writer: io.TextIOWrapper) -> float:
     # crop the image with just the bottom to get the scale
     pixel_ratio = scale.main(image, bottom)
 
-    (equ_low_mid, _, _, equ_mid, _) = thresh.main(
-        image[top:bottom, left:right], True, False, False, True, False)
-
+    (equ_low_mid, clahe_mid, _, equ_mid, _) = thresh.main(
+        image[top:bottom, left:right], True, True, False, True, False)
+    
     # the dark pixels in the each trace
     top_dark_pixels = np.array(np.where(equ_low_mid == 0))
     bottom_appendage_dark_pixels = np.array(np.where(equ_mid == 0))
 
-    (_, _, nose, caudal) = locate.main(
-        top_dark_pixels, bottom_appendage_dark_pixels, top_dark_pixels, False, False, True, True)
+    (_, _, nose, _) = locate.main(
+        top_dark_pixels, 
+        bottom_appendage_dark_pixels, 
+        top_dark_pixels, 
+        False, 
+        False, 
+        True, 
+        True
+    )
 
+    traces = trace.main([equ_low_mid, clahe_mid, None, equ_mid], True, False, False, False)
+
+    """ get caudal point with landmarks """
+    landmarks = landmark.get_landmarks(
+        traces, 
+        [False, False, False, False, False, False, False, False, False, True, True]
+    )
+
+    # get the landmarks that mark the beginning of the tail fin
+    (p1, p2) = landmarks
+    # approximate teh caudal using a quadratic equation
+    caudal = locate.approximate_caudal(p1, p2)
+
+    # calculate the length using the two points
     length = measure.regular_length(nose, caudal, pixel_ratio)
 
     # write the length into the csv
     writer.write(f"{guppy},{length}\n")
 
-    return length
+    return 0
 
+
+"""
+Use google cloud vision to detect the text in image in order to relabel images
+"""
 def detect_fish_id(guppy_path: str, out_dir: str) -> str:
     logger.info("FISH_ID detection has not been set up yet")
 
