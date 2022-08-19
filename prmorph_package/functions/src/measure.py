@@ -14,6 +14,6 @@ def regular_length(
     distance = utils.distance_btw_pts(nose, caudal)
 
     # inches:mmm -> 1:25.4
-    distance_mm = (distance / pixel_inch_ratio) * 25.4
+    distance_mm = (distance / pixel_inch_ratio) * 10
 
     return distance_mm
