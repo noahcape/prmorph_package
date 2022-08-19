@@ -43,7 +43,7 @@ def execute_workflow(in_dir: str, out_dir: str, file_desc: str, method: type.Cal
     with open(file_name, 'w') as writer:
 
         """ loop through in_dir """
-        for img in os.listdir(in_dir)[:5]:
+        for img in os.listdir(in_dir):
 
             """ ensure that is is a valid image file to read """
             if img.lower().endswith(('.png', '.jpg', '.jpeg')):

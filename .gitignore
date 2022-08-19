@@ -122,3 +122,7 @@ tests
 
 # ignore self made markdown files
 TODO.md
+
+# image
+*.jpeg
+*.JPG

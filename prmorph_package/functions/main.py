@@ -27,8 +27,10 @@ def regular_length(guppy_path: str, writer: io.TextIOWrapper, _) -> None:
     # use these to crop image
     (top, bottom, left, right) = crop.main(guppy_path)
 
-    # crop the image with just the bottom to get the scale
+    # # crop the image with just the bottom to get the scale
     pixel_ratio = scale.main(image, bottom)
+
+    # print(pixel_ratio)
 
     (equ_low_mid, clahe_mid, _, equ_mid, _) = thresh.main(
         image[top:bottom, left:right], True, True, False, True, False)
