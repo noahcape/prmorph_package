@@ -1,9 +1,6 @@
-from typing import List, Tuple, Callable
+from typing import List, Tuple
 import cv2 as cv
 import numpy as np
-import skimage
-import matplotlib.pyplot as plt
-from ... import utils
 
 
 Point = Tuple[int, int]
@@ -68,8 +65,12 @@ Main method used to get the placement of the fish.
 '''
 
 
-def main(img_path):
+def main(img_path, flip):
     image = cv.imread(img_path, 0)
+
+    if flip:
+        image = np.array(image).T
+
     clahe = cv.createCLAHE(clipLimit=1, tileGridSize=(8, 8))
     image_clahe = clahe.apply(image)
 

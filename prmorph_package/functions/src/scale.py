@@ -1,7 +1,7 @@
 '''
   This file with contain methods to detect the scale for
-  pixels to inch for guppy images for measurements
-  Measurements should be in mm -> inch:mm = 1:25.4
+  pixels to cm for guppy images for measurements
+  Measurements should be in mm -> cm:mm = 1:10
 '''
 import matplotlib.pyplot as plt
 from typing import List
@@ -76,5 +76,5 @@ def main(
 
     seperation = sum(filtered_seps) / len(filtered_seps)
 
-    # each line represents a tenth of an inch and inch
+    # each line represents a tenth of a cm
     return seperation * 10
