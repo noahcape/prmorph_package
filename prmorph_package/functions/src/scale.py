@@ -3,6 +3,7 @@
   pixels to inch for guppy images for measurements
   Measurements should be in mm -> inch:mm = 1:25.4
 '''
+import matplotlib.pyplot as plt
 from typing import List
 import numpy as np
 import cv2 as cv
@@ -26,7 +27,7 @@ def _approximate_ticks(pts: List[int]) -> List[float]:
             cur_bin.append(pt)
         else:
             avg = sum(cur_bin) / len(cur_bin)
-            if ((avg + 15 >= pt) & (avg - 15 <= pt)):
+            if ((avg + 20 >= pt) & (avg - 20 <= pt)):
                 cur_bin.append(pt)
             else:
                 bins.append(avg)
@@ -55,40 +56,19 @@ def _remove_outlier_seperations(
     return filtered_sep
 
 
-def _detect_ruler_ticks(thresholded_img) -> List[float]:
-    y_value = 0
-    ticks = []
+def _detect_ruler_ticks(img) -> List[float]:
+    for i in range(len(img)):
+        dark_pixels = np.array(np.where(img[i] < 130))
+        ticks = _approximate_ticks(dark_pixels[0])
 
-    while True:
-        # where the img @ the y value is dark (presumably the ticks)
-        lines: List[List[int], List[int]] = np.array(
-            np.where(thresholded_img[y_value] == 0))
-        ticks = _approximate_ticks(lines[0])
-
-        if len(ticks) >= 70:
-            break
-
-        y_value = y_value + 20
-
-    return ticks
-
-
-def scale_thresh(img):
-    # https://en.wikipedia.org/wiki/Adaptive_histogram_equalization
-    clahe = cv.createCLAHE(clipLimit=2, tileGridSize=(5, 5))
-    cl1 = clahe.apply(img.copy())
-
-    # create threshold image for scale
-    scale_thresh = cv.threshold(cl1, 50, 255, cv.THRESH_BINARY)[1]
-
-    return scale_thresh
-
+        if len(ticks) > 60:
+            return ticks
 
 def main(
     img,
     bottom
 ) -> float:
-    img = scale_thresh(img[bottom + 100:, :])
+    img = img[bottom:, :]
 
     ticks = _detect_ruler_ticks(img)
     seperation = _tick_seperation(ticks)

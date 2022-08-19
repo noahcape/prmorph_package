@@ -2,6 +2,7 @@
 import numpy as np
 import cv2 as cv
 import io
+import os
 import matplotlib.pyplot as plt
 from .src import vision
 from .src import locate_points as locate
@@ -15,7 +16,7 @@ from .. import logging as logs
 
 logger = logs.get_logger(__name__)
 
-def regular_length(guppy_path: str, writer: io.TextIOWrapper) -> float:
+def regular_length(guppy_path: str, writer: io.TextIOWrapper, _) -> None:
     # store the file name not direct path
     guppy = guppy_path.split("/")[-1]
 
@@ -26,8 +27,10 @@ def regular_length(guppy_path: str, writer: io.TextIOWrapper) -> float:
     # use these to crop image
     (top, bottom, left, right) = crop.main(guppy_path)
 
-    # crop the image with just the bottom to get the scale
+    # # crop the image with just the bottom to get the scale
     pixel_ratio = scale.main(image, bottom)
+
+    # print(pixel_ratio)
 
     (equ_low_mid, clahe_mid, _, equ_mid, _) = thresh.main(
         image[top:bottom, left:right], True, True, False, True, False)
@@ -65,14 +68,15 @@ def regular_length(guppy_path: str, writer: io.TextIOWrapper) -> float:
     # write the length into the csv
     writer.write(f"{guppy},{length}\n")
 
-    return 0
-
 
 """
 Use google cloud vision to detect the text in image in order to relabel images
 """
-def detect_fish_id(guppy_path: str, out_dir: str) -> str:
-    logger.info("FISH_ID detection has not been set up yet")
+def detect_fish_id(guppy_path: str, writer: io.TextIOWrapper, out_dir: str = "./") -> None:
+    # store the file name not direct path
+    guppy = guppy_path.split("/")[-1]
+    
+    logger.info(f"Detecting fish ID from {guppy}")
 
     image = cv.imread(guppy_path, 0)
 
@@ -83,7 +87,12 @@ def detect_fish_id(guppy_path: str, out_dir: str) -> str:
     file_name = f'{out_dir}/temp/ocr_{guppy_path.split("/")[-1]}'
     cv.imwrite(file_name, ocr_img)
 
-    # vision.detect_text(file_name)
+    fish_ID = vision.detect_text(file_name)
+
+    writer.write(f"{guppy},{fish_ID}")
+
+    os.remove(file_name)
+
     """ 
     add some kind of error correction, 
     we know the streams, 
