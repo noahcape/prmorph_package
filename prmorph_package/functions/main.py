@@ -27,7 +27,8 @@ def regular_length(guppy_path: str, writer: io.TextIOWrapper, _) -> None:
     flip = False
     if image.shape[0] > image.shape[1]:
         flip = True
-        image = np.array(image).T
+        image = cv.rotate(image, cv.ROTATE_90_COUNTERCLOCKWISE)
+        cv.imwrite("./flipped.jpg", image)
 
     # use these to crop image
     (top, bottom, left, right) = crop.main(guppy_path, flip)

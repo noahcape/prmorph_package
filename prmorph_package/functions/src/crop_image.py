@@ -69,7 +69,7 @@ def main(img_path, flip):
     image = cv.imread(img_path, 0)
 
     if flip:
-        image = np.array(image).T
+        image = cv.rotate(image, cv.ROTATE_90_COUNTERCLOCKWISE)
 
     clahe = cv.createCLAHE(clipLimit=1, tileGridSize=(8, 8))
     image_clahe = clahe.apply(image)
@@ -78,5 +78,5 @@ def main(img_path, flip):
     top += adjust_top(image_clahe, top)
     new_image = image_clahe[top:bottom,:]
     (nose, tail) = locate_fish_bounds(new_image)
-    new_image = new_image[:, nose - 25: tail + 30]
+
     return (top, bottom, nose - 25, tail + 30)

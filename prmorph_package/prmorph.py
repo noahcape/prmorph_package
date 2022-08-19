@@ -55,6 +55,6 @@ def execute_workflow(in_dir: str, out_dir: str, file_desc: str, method: type.Cal
                     logger.warning(f"Error reading {img}.")
 
                     with open(error_file_name, 'a') as error_writer:
-                        error_writer.write(f"ERROR: {img} with error: {str(e)}")
+                        error_writer.write(f"ERROR: {img} with error: {str(e)}\n")
 
     return file_name
