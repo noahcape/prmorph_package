@@ -119,3 +119,12 @@ guppies
 
 # ignore tests and docs
 tests
+
+# ignore self made markdown files
+TODO.md
+
+# image
+*.jpeg
+*.JPG
+
+*.zip

@@ -1,7 +1,7 @@
 import google.cloud.vision as vision
 import io
 
-def detect_text(path):
+def detect_text(path: str) -> str:
     """Detects text in the file."""
     client = vision.ImageAnnotatorClient()
 
@@ -10,20 +10,21 @@ def detect_text(path):
 
     image = vision.Image(content=content)
 
-    response = client.text_detection(image=image)
+    response = client.text_detection(
+        image=image,
+        # specify english handwriting as input
+        image_context={"language_hints": ["en-t-i0-handwrit"]}
+    )
     texts = response.text_annotations
-    print('Texts:')
 
+    fish_ID = ""
     for text in texts:
-        print('\n"{}"'.format(text.description))
-
-        vertices = (['({},{})'.format(vertex.x, vertex.y)
-                    for vertex in text.bounding_poly.vertices])
-
-        print('bounds: {}'.format(','.join(vertices)))
+        fish_ID = fish_ID + str(text.description).replace("\n", "_")
 
     if response.error.message:
         raise Exception(
             '{}\nFor more info on error messages, check: '
             'https://cloud.google.com/apis/design/errors'.format(
                 response.error.message))
+
+    return fish_ID
