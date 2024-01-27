@@ -128,3 +128,7 @@ TODO.md
 *.JPG
 
 *.zip
+
+# test files
+hist.py
+test_notebook.ipynb

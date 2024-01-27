@@ -1,3 +1,5 @@
+import math
+import statistics
 from typing import List, Tuple
 import cv2 as cv
 import numpy as np
@@ -5,6 +7,36 @@ import numpy as np
 
 Point = Tuple[int, int]
 Pixels = List[Point]
+
+def rotate_upright(img, pct = 0.10):
+    if len(img[0]) < len(img):
+        img = cv.rotate(img, cv.ROTATE_90_CLOCKWISE)
+        
+    x = len(img[0])
+    y = len(img)
+    delta_x = math.floor(x*pct)
+    delta_y = math.floor(y*pct)
+
+    cropped_img = img[delta_y:y-delta_y, delta_x:x-delta_x]
+    cropped_equ = cv.equalizeHist(cropped_img)
+
+
+    cropped_equ[cropped_equ < 225] = 0
+
+    vec = [0] * len(cropped_equ)
+
+    for (index, row) in enumerate(cropped_equ):
+        vec[index] = sum(row != 0)
+
+    # if left_med > right_med then in correct orientation
+    # else flip 180 degrees
+    left_med = statistics.median(vec[50:150])
+    right_med = statistics.median(vec[-150:-50])
+    if right_med > left_med:
+        img = cv.rotate(img, cv.ROTATE_90_CLOCKWISE)
+        img = cv.rotate(img, cv.ROTATE_90_CLOCKWISE)
+
+    return img
 
 def locate_fish_bounds(img):
     img = np.array(img).T
@@ -68,10 +100,11 @@ Main method used to get the placement of the fish.
 def main(img_path, flip):
     image = cv.imread(img_path, 0)
 
-    if flip:
-        image = cv.rotate(image, cv.ROTATE_90_COUNTERCLOCKWISE)
+    # rotate image if needed
+    image = rotate_upright(image)
 
-    clahe = cv.createCLAHE(clipLimit=1, tileGridSize=(8, 8))
+    # clahe = cv.createCLAHE(clipLimit=1, tileGridSize=(8, 8))
+    clahe = cv.createCLAHE(clipLimit=0.5, tileGridSize=(8, 8))
     image_clahe = clahe.apply(image)
 
     (top, bottom) = from_bottom(image_clahe)    

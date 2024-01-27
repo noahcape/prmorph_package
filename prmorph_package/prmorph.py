@@ -52,7 +52,7 @@ def execute_workflow(in_dir: str, out_dir: str, file_desc: str, method: type.Cal
                     """ compute the length """
                     method(f"{in_dir}/{img}", writer, out_dir)
                 except Exception as e:
-                    logger.warning(f"Error reading {img}.")
+                    logger.warning(f"Error reading {img} -- {e}.")
 
                     with open(error_file_name, 'a') as error_writer:
                         error_writer.write(f"ERROR: {img} with error: {str(e)}\n")
