@@ -125,7 +125,7 @@ def main(
     ticks = _detect_ruler_ticks(img, dark)
 
     filtered_seps = remove_outliars(ticks)
-
+    
     seperation = np.mean(filtered_seps)
     
     # each line represents a tenth of a cm

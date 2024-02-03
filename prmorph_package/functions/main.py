@@ -36,7 +36,6 @@ def regular_length(guppy_path: str, writer: io.TextIOWrapper, _) -> None:
 
     # crop the image with just the bottom to get the scale
     pixel_ratio = scale.main(image, bottom, dark)
-    print(pixel_ratio)
 
     # contrast_fish = cv.createCLAHE(clipLimit=0.5, tileGridSize=(8, 8)).apply(cropped_img)
     # contrast_fish[contrast_fish < 130] = 0
@@ -75,7 +74,7 @@ def regular_length(guppy_path: str, writer: io.TextIOWrapper, _) -> None:
 
     # calculate the length using the two points
     length = measure.regular_length(nose, tail, pixel_ratio)
-
+    print(length)
     # write the length into the csv
     writer.write(f"{guppy},{length}\n")
 
