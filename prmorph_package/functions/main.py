@@ -21,9 +21,10 @@ def regular_length(guppy_path: str, writer: io.TextIOWrapper, _) -> None:
     guppy = guppy_path.split("/")[-1]
 
     logger.info(f"Computing length of {guppy}")
+    logger.info(f"testing if I can print {guppy}")
 
     image = cv.imread(guppy_path, 0)
-    print(guppy_path)
+    
     # flip = False
     # if image.shape[0] > image.shape[1]:
     #     flip = True
@@ -31,10 +32,10 @@ def regular_length(guppy_path: str, writer: io.TextIOWrapper, _) -> None:
     #     cv.imwrite("./flipped.jpg", image)
 
     # use these to crop image
-    logger.info("Soethig went wrong before cropping")
+    
     (image, nose, tail, bottom, dark) = crop.main(guppy_path)
     # (top, bottom, left, right) = crop.main(guppy_path, flip)
-    logger.info("Soethig went wrong during")
+    
     # crop the image with just the bottom to get the scale
     pixel_ratio = scale.main(image, bottom, dark)
 
