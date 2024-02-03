@@ -23,7 +23,7 @@ def regular_length(guppy_path: str, writer: io.TextIOWrapper, _) -> None:
     logger.info(f"Computing length of {guppy}")
 
     image = cv.imread(guppy_path, 0)
-
+    print(guppy_path)
     # flip = False
     # if image.shape[0] > image.shape[1]:
     #     flip = True
