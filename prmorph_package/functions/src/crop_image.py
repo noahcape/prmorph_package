@@ -267,7 +267,6 @@ def main(img_path):
 
     new_image = image_clahe[top + 50: bottom + 30, :]
     (nose, tail) = locate_fish_bounds(new_image, dark)
-
     return (image, nose, tail, bottom, dark)
 
     # return (0, bottom, nose - 25, tail + 30)

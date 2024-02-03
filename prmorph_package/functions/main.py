@@ -31,9 +31,10 @@ def regular_length(guppy_path: str, writer: io.TextIOWrapper, _) -> None:
     #     cv.imwrite("./flipped.jpg", image)
 
     # use these to crop image
+    logger.info("Soethig went wrong before cropping")
     (image, nose, tail, bottom, dark) = crop.main(guppy_path)
     # (top, bottom, left, right) = crop.main(guppy_path, flip)
-
+    logger.info("Soethig went wrong during")
     # crop the image with just the bottom to get the scale
     pixel_ratio = scale.main(image, bottom, dark)
 
@@ -74,7 +75,7 @@ def regular_length(guppy_path: str, writer: io.TextIOWrapper, _) -> None:
 
     # calculate the length using the two points
     length = measure.regular_length(nose, tail, pixel_ratio)
-    print(length)
+    logger.info(length)
     # write the length into the csv
     writer.write(f"{guppy},{length}\n")
 
