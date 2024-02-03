@@ -24,50 +24,57 @@ def regular_length(guppy_path: str, writer: io.TextIOWrapper, _) -> None:
 
     image = cv.imread(guppy_path, 0)
 
-    flip = False
-    if image.shape[0] > image.shape[1]:
-        flip = True
-        image = cv.rotate(image, cv.ROTATE_90_COUNTERCLOCKWISE)
-        cv.imwrite("./flipped.jpg", image)
+    # flip = False
+    # if image.shape[0] > image.shape[1]:
+    #     flip = True
+    #     image = cv.rotate(image, cv.ROTATE_90_COUNTERCLOCKWISE)
+    #     cv.imwrite("./flipped.jpg", image)
 
     # use these to crop image
-    (top, bottom, left, right) = crop.main(guppy_path, flip)
+    (image, nose, tail, bottom, dark) = crop.main(guppy_path)
+    # (top, bottom, left, right) = crop.main(guppy_path, flip)
 
     # crop the image with just the bottom to get the scale
-    pixel_ratio = scale.main(image, bottom)
+    pixel_ratio = scale.main(image, bottom, dark)
+    print(pixel_ratio)
 
-    (equ_low_mid, clahe_mid, _, equ_mid, _) = thresh.main(
-        image[top:bottom, left:right], True, True, False, True, False)
+    # contrast_fish = cv.createCLAHE(clipLimit=0.5, tileGridSize=(8, 8)).apply(cropped_img)
+    # contrast_fish[contrast_fish < 130] = 0
+    # plt.imshow(contrast_fish)
+    # plt.show()
+
+    # (equ_low_mid, clahe_mid, _, equ_mid, _) = thresh.main(
+    #     cropped_img, True, True, False, True, False)
     
     # the dark pixels in the each trace
-    top_dark_pixels = np.array(np.where(equ_low_mid == 0))
-    bottom_appendage_dark_pixels = np.array(np.where(equ_mid == 0))
+    # top_dark_pixels = np.array(np.where(equ_low_mid == 0))
+    # bottom_appendage_dark_pixels = np.array(np.where(equ_mid == 0))
 
-    (_, _, nose, _) = locate.main(
-        top_dark_pixels, 
-        bottom_appendage_dark_pixels, 
-        top_dark_pixels, 
-        False, 
-        False, 
-        True, 
-        True
-    )
+    # (_, _, nose, _) = locate.main(
+    #     top_dark_pixels, 
+    #     bottom_appendage_dark_pixels, 
+    #     top_dark_pixels, 
+    #     False, 
+    #     False, 
+    #     True, 
+    #     True
+    # )
 
-    traces = trace.main([equ_low_mid, clahe_mid, None, equ_mid], True, False, False, False)
+    # traces = trace.main([equ_low_mid, clahe_mid, None, equ_mid], True, False, False, False)
 
-    """ get caudal point with landmarks """
-    landmarks = landmark.get_landmarks(
-        traces, 
-        [False, False, False, False, False, False, False, False, False, True, True]
-    )
+    # """ get caudal point with landmarks """
+    # landmarks = landmark.get_landmarks(
+    #     traces, 
+    #     [False, False, False, False, False, False, False, False, False, True, True]
+    # )
 
-    # get the landmarks that mark the beginning of the tail fin
-    (p1, p2) = landmarks
-    # approximate teh caudal using a quadratic equation
-    caudal = locate.approximate_caudal(p1, p2)
+    # # get the landmarks that mark the beginning of the tail fin
+    # (p1, p2) = landmarks
+    # # approximate teh caudal using a quadratic equation
+    # caudal = locate.approximate_caudal(p1, p2)
 
     # calculate the length using the two points
-    length = measure.regular_length(nose, caudal, pixel_ratio)
+    length = measure.regular_length(nose, tail, pixel_ratio)
 
     # write the length into the csv
     writer.write(f"{guppy},{length}\n")

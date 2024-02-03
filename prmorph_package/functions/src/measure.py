@@ -7,11 +7,12 @@ from ... import utils
 
 
 def regular_length(
-    nose: Tuple[float, float],
-    caudal: Tuple[float, float],
+    nose: float,
+    caudal: float,
     pixel_ratio: float,
 ) -> float:
-    distance = utils.distance_btw_pts(nose, caudal)
+    # distance = utils.distance_btw_pts(nose, caudal)
+    distance = caudal - nose
 
     distance_mm = (distance / pixel_ratio) * 10
 
