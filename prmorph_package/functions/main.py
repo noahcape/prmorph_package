@@ -20,9 +20,6 @@ def regular_length(guppy_path: str, writer: io.TextIOWrapper, _) -> None:
     # store the file name not direct path
     guppy = guppy_path.split("/")[-1]
 
-    logger.info(f"Computing length of {guppy}")
-    logger.info(f"testing if I can print {guppy}")
-
     image = cv.imread(guppy_path, 0)
     
     # flip = False
@@ -76,7 +73,7 @@ def regular_length(guppy_path: str, writer: io.TextIOWrapper, _) -> None:
 
     # calculate the length using the two points
     length = measure.regular_length(nose, tail, pixel_ratio)
-    logger.info(length)
+
     # write the length into the csv
     writer.write(f"{guppy},{length}\n")
 
