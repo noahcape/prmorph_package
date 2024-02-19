@@ -2,6 +2,6 @@
 
 __author__ = """Noah Cape"""
 __email__ = 'noahcape@gmail.com'
-__version__ = '0.2.0'
+__version__ = '0.2.1'
 
 from .prmorph import main
